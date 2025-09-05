@@ -2,13 +2,16 @@ import MainLayout from "@/components/layout/MainLayout";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
 import type { Metadata } from "next";
+import { NextPageProps } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Articles about software development, web technologies, and professional growth.',
 };
 
-export default async function BlogPage() {
+export default async function BlogPage(props: NextPageProps) {
+  // We can ignore the params and searchParams in this page since we don't use them
+  
   const posts = await getAllPosts();
 
   return (

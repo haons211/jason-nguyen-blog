@@ -2,8 +2,11 @@ import MainLayout from "@/components/layout/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
+import { NextPageProps } from "@/lib/types";
 
-export default async function Home() {
+export default async function Home(props: NextPageProps) {
+  // We can ignore the params and searchParams in this page since we don't use them
+  
   const posts = await getAllPosts();
   const featuredPosts = posts.slice(0, 3);
 
