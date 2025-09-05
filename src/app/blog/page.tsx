@@ -2,14 +2,13 @@ import MainLayout from "@/components/layout/MainLayout";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
 import type { Metadata } from "next";
-import { PageProps } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Articles about software development, web technologies, and professional growth.',
 };
 
-export default async function BlogPage(props: PageProps) {
+export default async function BlogPage() {
   const posts = await getAllPosts();
 
   return (

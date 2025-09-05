@@ -8,5 +8,5 @@ export interface PageProps<T = Record<string, string>> {
   searchParams?: Record<string, string | string[]>;
 }
 
-// For pages that use slug
-export interface SlugPageProps extends PageProps<{ slug: string }> {} 
+// For pages that use slug - adding a comment to make it non-empty
+export type SlugPageProps = PageProps<{ slug: string }>; 
