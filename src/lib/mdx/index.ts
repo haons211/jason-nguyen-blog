@@ -15,6 +15,16 @@ export type PostMeta = {
   readingTime?: string;
 };
 
+export type UserInformation = {
+  name: string;
+  jobTitle: string;
+  email: string;
+  avatarUrl: string;
+  bio: string;
+  skills: string[];
+  socials: { name: string; url: string }[];
+};
+
 export async function getAllPostSlugs() {
   const files = fs.readdirSync(path.join(contentDirectory, 'posts'));
   return files
@@ -67,3 +77,15 @@ function calculateReadingTime(content: string) {
   const readingTime = Math.ceil(wordCount / wordsPerMinute);
   return `${readingTime} min read`;
 } 
+
+export function getUserInformation() : UserInformation {
+  const filePath = path.join(process.cwd(), 'UserInformation.mdx');
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const { data } = matter(fileContents);
+  return data as UserInformation;
+}
+
+export function getUserSkills() : string[] {
+  const userInfo = getUserInformation();
+  return userInfo.skills;
+}

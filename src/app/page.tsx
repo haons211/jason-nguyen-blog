@@ -1,7 +1,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts, getUserInformation } from "@/lib/mdx";
 import { NextPageProps } from "@/lib/types";
 
 export default async function Home(props: NextPageProps) {
@@ -20,7 +20,7 @@ export default async function Home(props: NextPageProps) {
               Software Engineering & Technical Insights
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              Hi, I&apos;m Jason. I write about software development, web technologies, and professional growth.
+              Hi, I&apos;m {getUserInformation().name}. I write about software development, web technologies, and professional growth.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
