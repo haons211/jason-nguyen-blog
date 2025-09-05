@@ -57,7 +57,7 @@ export default function Footer() {
           ))}
         </div>
         <p className="mt-8 text-center text-base text-gray-500 dark:text-gray-400">
-          &copy; {new Date().getFullYear()} Jason Nguyen. All rights reserved.
+          &copy; {new Date().getFullYear()} Jasonn Nguyen. All rights reserved.
         </p>
       </div>
     </footer>
