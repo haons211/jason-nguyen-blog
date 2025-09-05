@@ -6,6 +6,7 @@ import Link from "next/link";
 import Comments from "@/components/Comments";
 import mdxComponents from "@/lib/mdx/mdx-components";
 import TableOfContents from "@/components/TableOfContents";
+import { SlugPageProps } from "@/lib/types";
 
 // This generates all the static paths at build time
 export async function generateStaticParams() {
@@ -14,13 +15,13 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for each blog post
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
-}): Promise<Metadata> {
-  // Extract slug safely
-  const { slug } = params;
+export async function generateMetadata(
+  props: SlugPageProps
+): Promise<Metadata> {
+  // Await the params
+  const params = await props.params;
+  const slug = params.slug;
+  
   const { meta } = await getPostBySlug(slug);
   
   return {
@@ -43,13 +44,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPost({ 
-  params 
-}: { 
-  params: { slug: string } 
-}) {
-  // Extract slug safely
-  const { slug } = params;
+export default async function BlogPost(props: SlugPageProps) {
+  // Await the params
+  const params = await props.params;
+  const slug = params.slug;
+  
   const { meta, content } = await getPostBySlug(slug);
   
   // Format the date

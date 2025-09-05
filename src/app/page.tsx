@@ -2,8 +2,9 @@ import MainLayout from "@/components/layout/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
+import { PageProps } from "@/lib/types";
 
-export default async function Home() {
+export default async function Home(props: PageProps) {
   const posts = await getAllPosts();
   const featuredPosts = posts.slice(0, 3);
 

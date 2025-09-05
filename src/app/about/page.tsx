@@ -1,13 +1,14 @@
 import MainLayout from "@/components/layout/MainLayout";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { PageProps } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: 'About',
   description: 'Learn more about Jason Nguyen - software engineer, technical writer, and digital creator.',
 };
 
-export default function AboutPage() {
+export default function AboutPage(props: PageProps) {
   return (
     <MainLayout>
       <div className="max-w-4xl mx-auto">
