@@ -67,13 +67,13 @@ export default function AboutPage() {
           
           <div className="md:col-span-2 space-y-8">
             <section>
-              <h2 className="text-2xl font-bold mb-4">Hello, I'm Jason</h2>
+              <h2 className="text-2xl font-bold mb-4">Hello, I&apos;m Jason</h2>
               <div className="prose dark:prose-invert">
                 <p>
-                  I'm a software engineer specializing in web development with a focus on creating fast, accessible, and user-friendly applications. With over 8 years of experience in the industry, I've worked on a wide range of projects from small startups to large enterprise applications.
+                  I&apos;m a software engineer specializing in web development with a focus on creating fast, accessible, and user-friendly applications. With over 8 years of experience in the industry, I&apos;ve worked on a wide range of projects from small startups to large enterprise applications.
                 </p>
                 <p>
-                  Currently, I'm working as a Senior Software Engineer at a tech company where I lead frontend development efforts and mentor junior developers. I'm passionate about clean code, performance optimization, and creating exceptional user experiences.
+                  Currently, I&apos;m working as a Senior Software Engineer at a tech company where I lead frontend development efforts and mentor junior developers. I&apos;m passionate about clean code, performance optimization, and creating exceptional user experiences.
                 </p>
               </div>
             </section>
@@ -96,10 +96,10 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold mb-4">About This Blog</h2>
               <div className="prose dark:prose-invert">
                 <p>
-                  This blog is my digital garden—a place where I share technical insights, tutorials, and reflections on my journey in software development. I write about topics I'm passionate about, including web development, performance optimization, and career growth in tech.
+                  This blog is my digital garden—a place where I share technical insights, tutorials, and reflections on my journey in software development. I write about topics I&apos;m passionate about, including web development, performance optimization, and career growth in tech.
                 </p>
                 <p>
-                  The site is built with Next.js and deployed on Vercel, using MDX for content management. It's designed to be fast, accessible, and easy to read.
+                  The site is built with Next.js and deployed on Vercel, using MDX for content management. It&apos;s designed to be fast, accessible, and easy to read.
                 </p>
               </div>
             </section>

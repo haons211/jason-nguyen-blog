@@ -17,7 +17,7 @@ export default async function Home() {
               Software Engineering & Technical Insights
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              Hi, I'm Jason. I write about software development, web technologies, and professional growth.
+              Hi, I&apos;m Jason. I write about software development, web technologies, and professional growth.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
