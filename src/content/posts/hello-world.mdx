@@ -1,0 +1,162 @@
+---
+title: 'Hello World: Building a Next.js Blog with the App Router'
+description: 'Learn how to create a high-performance blog using Next.js 14 and its App Router architecture.'
+date: '2023-08-01'
+tags: ['next.js', 'react', 'web development']
+---
+
+# Hello World: Building a Next.js Blog with the App Router
+
+Next.js 14 introduces significant improvements to the App Router, making it an excellent choice for content-focused websites like blogs. In this post, I'll walk through how I built this very blog using the latest Next.js features.
+
+## Why Next.js for a Blog?
+
+When choosing a framework for a blog, several factors come into play:
+
+- **Performance**: Blogs need fast initial page loads for both SEO and user experience
+- **Developer Experience**: The ability to quickly add features and maintain content
+- **Content Management**: A flexible system for authoring and organizing posts
+- **SEO**: Built-in capabilities for metadata, sitemaps, and structured data
+
+Next.js excels in all these areas, especially with its hybrid rendering capabilities that allow for static generation of content-heavy pages.
+
+## The App Router Architecture
+
+The App Router introduces a file-based routing system with built-in support for layouts, loading states, and error boundaries. Here's how I structured this blog:
+
+```tsx
+// app/layout.tsx - Root layout with metadata
+import { Geist, Geist_Mono } from "next/font/google";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={geistSans.variable}>
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+### Nested Layouts
+
+One of the most powerful features of the App Router is nested layouts. They allow you to create shared UI for specific sections of your site:
+
+```tsx
+// app/blog/layout.tsx - Blog section layout
+export default function BlogLayout({ children }) {
+  return (
+    <div className="blog-container">
+      <aside className="sidebar">
+        <RecentPosts />
+      </aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+### Server Components
+
+React Server Components are a game-changer for content-heavy sites:
+
+```tsx
+// This component runs on the server only
+async function BlogList() {
+  const posts = await fetchPosts();
+  
+  return (
+    <ul>
+      {posts.map(post => (
+        <PostPreview key={post.id} post={post} />
+      ))}
+    </ul>
+  );
+}
+```
+
+## MDX for Content
+
+For the content itself, I chose MDX, which allows me to embed React components directly within markdown:
+
+- **Gray Matter**: For parsing frontmatter metadata
+- **Rehype Pretty Code**: For syntax highlighting
+- **Custom Components**: For rich embeds and interactive elements
+
+### Custom MDX Components
+
+MDX really shines when you create custom components for your specific needs:
+
+```tsx
+const components = {
+  Callout: ({ children, type }) => (
+    <div className={`callout ${type}`}>{children}</div>
+  )
+};
+
+// In your MDX file
+<Callout type="info">
+  This is an important note!
+</Callout>
+```
+
+### Content Organization
+
+The content for this blog is organized in a simple, Git-based structure:
+
+```
+/content
+  /posts
+    /hello-world.mdx
+    /nextjs-features.mdx
+  /pages
+    /about.mdx
+```
+
+## Performance Optimization
+
+Next.js provides several tools for optimizing performance:
+
+### Image Optimization
+
+The `next/image` component automatically optimizes images for different devices:
+
+```tsx
+import Image from 'next/image';
+
+export function ProfileImage() {
+  return (
+    <Image 
+      src="/profile.jpg" 
+      width={300} 
+      height={300}
+      alt="Profile photo"
+    />
+  );
+}
+```
+
+### Font Optimization
+
+Using `next/font` ensures fonts load quickly without layout shifts:
+
+```tsx
+import { Geist } from 'next/font/google';
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist',
+});
+```
+
+## Conclusion
+
+Building a blog with Next.js 14 and its App Router has been a delightful experience. The combination of static generation for content pages and server components for dynamic features provides the best of both worlds: blazing-fast page loads and interactive features when needed.
+
+In future posts, I'll dive deeper into specific aspects of this implementation, including the MDX processing pipeline and performance optimization techniques. 
