@@ -65,9 +65,9 @@ export default async function BlogPost(props: SlugPageProps) {
   return (
     <MainLayout>
       <div className="max-w-6xl mx-auto px-4 lg:px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 lg:gap-16">
           {/* Left Sidebar - Table of Contents */}
-          <aside className="self-start lg:-ml-8 xl:-ml-12">
+          <aside className="self-start lg:-ml-16 xl:-ml-24 2xl:-ml-32">
             <TableOfContents />
           </aside>
           

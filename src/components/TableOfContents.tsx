@@ -99,8 +99,8 @@ export default function TableOfContents() {
   }
 
   return (
-    <nav className="toc hidden lg:block sticky top-24">
-      <div className="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-200">
+    <nav className="toc hidden lg:block lg:fixed top-16 lg:left-8 xl:left-16 2xl:left-24 lg:w-[280px] z-10">
+      <div className="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-200 max-h-[calc(100vh-6rem)] overflow-auto">
         <h3 className="text-lg font-bold mb-5 text-gray-900 pb-3 border-b border-gray-200">
           Table of Contents
         </h3>
