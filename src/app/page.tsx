@@ -39,10 +39,10 @@ export default async function Home(props: NextPageProps) {
           </div>
           <div className="relative h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c"
-              alt="Coding on a laptop"
+              src="/hero.jpg"
+              alt="Hero image"
               fill
-              className="object-cover"
+              className="object-contain bg-white"
               priority
             />
           </div>

@@ -47,7 +47,7 @@ const components = {
     const isInternal = href?.startsWith('/');
     if (isInternal) {
       return (
-        <Link href={href} className="text-blue-600 dark:text-blue-400 hover:underline">
+        <Link href={href} className="text-blue-600 hover:underline">
           {children}
         </Link>
       );
@@ -58,7 +58,7 @@ const components = {
         href={href} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="text-blue-600 dark:text-blue-400 hover:underline"
+        className="text-blue-600 hover:underline"
       >
         {children}
       </a>
@@ -86,7 +86,7 @@ const components = {
     <li className="mb-1">{children}</li>
   ),
   code: ({ children }: { children: React.ReactNode }) => (
-    <code className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm">
+    <code className="px-1.5 py-0.5 rounded bg-gray-100 font-mono text-sm">
       {children}
     </code>
   ),
@@ -96,9 +96,9 @@ const components = {
   // Add custom components below
   Callout: ({ children, type = 'info' }: { children: React.ReactNode; type?: 'info' | 'warning' | 'error' }) => {
     const styles = {
-      info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-500',
-      warning: 'bg-amber-50 dark:bg-amber-900/20 border-amber-500',
-      error: 'bg-red-50 dark:bg-red-900/20 border-red-500',
+      info: 'bg-blue-50 border-blue-500',
+      warning: 'bg-amber-50 border-amber-500',
+      error: 'bg-red-50 border-red-500',
     };
     
     return (

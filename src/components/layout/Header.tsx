@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import SearchBar from '@/components/SearchBar';
 
 const navigation = [
@@ -16,8 +17,9 @@ export default function Header() {
             <div className="flex-shrink-0">
               <Link 
                 href="/" 
-                className="text-xl font-medium"
+                className="flex items-center gap-2 text-xl font-medium"
               >
+                <Image src="/logo.png" alt="Logo" width={100} height={100} />
                 Jason Nguyen
               </Link>
             </div>

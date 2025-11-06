@@ -17,19 +17,45 @@ export default function TableOfContents() {
   // Extract headings when the component mounts
   useEffect(() => {
     const extractHeadings = () => {
-      const headingElements = Array.from(document.querySelectorAll('h1, h2, h3'));
-      const headings = headingElements.map(heading => {
-        // Generate an ID if one doesn't exist
-        if (!heading.id) {
-          heading.id = heading.textContent?.toLowerCase().replace(/\s+/g, '-') ?? '';
-        }
-        
-        return {
-          id: heading.id,
-          text: heading.textContent || '',
-          level: parseInt(heading.tagName[1])
-        };
-      });
+      // Only get headings from the article content, not from sidebar or other sections
+      const article = document.querySelector('article');
+      if (!article) return;
+      
+      const headingElements = Array.from(article.querySelectorAll('h1, h2, h3'));
+      const excludedTexts = ['Table of Contents', 'Comments'];
+      const seenTexts = new Set<string>();
+      
+      const headings = headingElements
+        .map(heading => {
+          // Generate an ID if one doesn't exist
+          if (!heading.id) {
+            heading.id = heading.textContent?.toLowerCase().replace(/\s+/g, '-') ?? '';
+          }
+          
+          const text = heading.textContent?.trim() || '';
+          
+          return {
+            id: heading.id,
+            text,
+            level: parseInt(heading.tagName[1])
+          };
+        })
+        .filter(heading => {
+          // Exclude specific texts
+          if (excludedTexts.some(excluded => heading.text.includes(excluded))) {
+            return false;
+          }
+          // Exclude h1 (usually the post title, not needed in TOC)
+          if (heading.level === 1) {
+            return false;
+          }
+          // Remove duplicates
+          if (seenTexts.has(heading.text)) {
+            return false;
+          }
+          seenTexts.add(heading.text);
+          return true;
+        });
       
       setHeadings(headings);
     };
@@ -41,7 +67,10 @@ export default function TableOfContents() {
   // Handle scroll and highlight active section
   useEffect(() => {
     const handleScroll = () => {
-      const headingElements = Array.from(document.querySelectorAll('h1, h2, h3'));
+      const article = document.querySelector('article');
+      if (!article) return;
+      
+      const headingElements = Array.from(article.querySelectorAll('h2, h3'));
       
       // Find the heading that's currently visible
       for (let i = headingElements.length - 1; i >= 0; i--) {
