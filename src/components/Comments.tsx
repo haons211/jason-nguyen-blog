@@ -1,17 +1,15 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useTheme } from 'next-themes';
 
 export default function Comments() {
   const ref = useRef<HTMLDivElement>(null);
-  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     // If the ref or theme changes, reload the comments
     if (!ref.current || ref.current.hasChildNodes()) return;
 
-    const theme = resolvedTheme === 'dark' ? 'dark' : 'light';
+    const theme = 'light';
     
     const scriptEl = document.createElement('script');
     scriptEl.src = 'https://giscus.app/client.js';
@@ -39,19 +37,9 @@ export default function Comments() {
         scriptEl.parentNode.removeChild(scriptEl);
       }
     };
-  }, [resolvedTheme]);
+  }, []);
 
-  // Update the theme when it changes
-  useEffect(() => {
-    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-    if (!iframe) return;
-
-    const theme = resolvedTheme === 'dark' ? 'dark' : 'light';
-    iframe.contentWindow?.postMessage(
-      { giscus: { setConfig: { theme } } },
-      'https://giscus.app'
-    );
-  }, [resolvedTheme]);
+  // Static theme: no dynamic updates needed
 
   return (
     <section className="mt-12 pt-6 border-t border-gray-100 dark:border-gray-800">

@@ -3,6 +3,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { NextPageProps } from "@/lib/types";
 import { getUserInformation, getUserSkills } from "@/lib/mdx"; 
+import { getAllCompanySlugs, getCompanyBySlug } from "@/lib/companies";
+import TimelineItem from "@/components/career/TimelineItem";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 
 export const metadata: Metadata = {
@@ -10,10 +13,20 @@ export const metadata: Metadata = {
   description: 'Learn more about Jason Nguyen - software engineer, technical writer, and digital creator.',
 };
 
-export default function AboutPage(props: NextPageProps) {
+export default async function AboutPage(props: NextPageProps) {
   // Get User Information
   const userInfo = getUserInformation();
   const userSkills = getUserSkills();
+  // Load career items
+  const companySlugs = await getAllCompanySlugs();
+  const careerItems = await Promise.all(
+    companySlugs.map(async (slug) => {
+      const { meta, content } = await getCompanyBySlug(slug);
+      return { meta, content };
+    })
+  );
+  careerItems.sort((a, b) => new Date(b.meta.startDate).getTime() - new Date(a.meta.startDate).getTime());
+
   return (
     <MainLayout>
       <div className="max-w-4xl mx-auto">
@@ -75,7 +88,7 @@ export default function AboutPage(props: NextPageProps) {
               <h2 className="text-2xl font-bold mb-4">Skills & Expertise</h2>
               <ul className="grid grid-cols-2 gap-2">
                 {userSkills.map((skill) => (
-                  <li className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded">{skill}</li>
+                  <li key={skill} className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded">{skill}</li>
                 ))}
               </ul>
             </section>
@@ -91,6 +104,18 @@ export default function AboutPage(props: NextPageProps) {
                 </p>
               </div>
             </section>
+
+          {/* Career Timeline */}
+          <section id="career" className="pt-6 border-t border-gray-100 dark:border-gray-800">
+            <h2 className="text-2xl font-bold mb-4">Career</h2>
+            <ol className="relative">
+              {careerItems.map(({ meta, content }) => (
+                <TimelineItem key={meta.slug} item={meta}>
+                  <MDXRemote source={content} />
+                </TimelineItem>
+              ))}
+            </ol>
+          </section>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CodeBlock from '@/components/mdx/CodeBlock';
 
 // Helper to generate slug from text
 const slugify = (text: string) => {
@@ -88,6 +89,9 @@ const components = {
     <code className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 font-mono text-sm">
       {children}
     </code>
+  ),
+  pre: ({ children }: { children: React.ReactNode }) => (
+    <CodeBlock>{children}</CodeBlock>
   ),
   // Add custom components below
   Callout: ({ children, type = 'info' }: { children: React.ReactNode; type?: 'info' | 'warning' | 'error' }) => {

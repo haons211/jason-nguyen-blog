@@ -1,5 +1,5 @@
 import MainLayout from "@/components/layout/MainLayout";
-import { getAllPostSlugs, getPostBySlug } from "@/lib/mdx";
+import { getAllPostSlugs, getPostBySlug, getAllPosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -50,6 +50,10 @@ export default async function BlogPost(props: SlugPageProps) {
   const slug = params.slug;
   
   const { meta, content } = await getPostBySlug(slug);
+  const allPosts = await getAllPosts();
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null; // newer
+  const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null; // older
   
   // Format the date
   const formattedDate = new Date(meta.date).toLocaleDateString("en-US", {
@@ -124,6 +128,49 @@ export default async function BlogPost(props: SlugPageProps) {
             
             {/* Comments Section */}
             <Comments />
+
+            {/* Post Navigation */}
+            <nav className="mt-12 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4" aria-label="Post navigation">
+              <div className="flex-1">
+                {nextPost ? (
+                  <Link
+                    href={`/blog/${nextPost.slug}`}
+                    className="group inline-flex items-center rounded-md border border-gray-200 dark:border-gray-800 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    aria-label={`Older post: ${nextPost.title}`}
+                  >
+                    <svg className="mr-2 h-5 w-5 text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span className="text-sm">
+                      <span className="block text-gray-500 dark:text-gray-400">Older</span>
+                      <span className="block font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{nextPost.title}</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <span className="text-sm text-gray-400">No older post</span>
+                )}
+              </div>
+
+              <div className="flex-1 text-right">
+                {prevPost ? (
+                  <Link
+                    href={`/blog/${prevPost.slug}`}
+                    className="group inline-flex items-center rounded-md border border-gray-200 dark:border-gray-800 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    aria-label={`Newer post: ${prevPost.title}`}
+                  >
+                    <span className="text-right text-sm mr-2">
+                      <span className="block text-gray-500 dark:text-gray-400">Newer</span>
+                      <span className="block font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{prevPost.title}</span>
+                    </span>
+                    <svg className="h-5 w-5 text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                ) : (
+                  <span className="text-sm text-gray-400">No newer post</span>
+                )}
+              </div>
+            </nav>
           </div>
         </div>
       </div>

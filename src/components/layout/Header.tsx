@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import SearchBar from '@/components/SearchBar';
-import ThemeToggle from '@/components/ThemeToggle';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
-  { name: 'About', href: '/about' },
+  { name: 'About', href: '/about#career' },
 ];
 
 export default function Header() {
@@ -22,9 +21,7 @@ export default function Header() {
                 Jason Nguyen
               </Link>
             </div>
-            <div className="sm:hidden flex items-center">
-              <ThemeToggle />
-            </div>
+            <div className="sm:hidden flex items-center" />
           </div>
           
           <div className="w-full sm:w-auto sm:flex-1 px-4 sm:px-8 max-w-md mx-auto">
@@ -43,9 +40,7 @@ export default function Header() {
                 </Link>
               ))}
             </div>
-            <div className="hidden sm:flex items-center">
-              <ThemeToggle />
-            </div>
+            <div className="hidden sm:flex items-center" />
           </nav>
         </div>
         
