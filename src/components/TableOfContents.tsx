@@ -70,9 +70,9 @@ export default function TableOfContents() {
   }
 
   return (
-    <nav className="toc hidden lg:block sticky top-24 overflow-auto max-h-[calc(100vh-10rem)]">
-      <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-800">
-        <h3 className="text-lg font-bold mb-5 text-gray-900 dark:text-gray-100 pb-3 border-b border-gray-200 dark:border-gray-700">
+    <nav className="toc hidden lg:block sticky top-24">
+      <div className="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-200">
+        <h3 className="text-lg font-bold mb-5 text-gray-900 pb-3 border-b border-gray-200">
           Table of Contents
         </h3>
         <ul className="space-y-3">
@@ -82,15 +82,15 @@ export default function TableOfContents() {
             
             // Different dot styles based on heading level
             const dotStyle = heading.level === 1 
-              ? "before:content-['•'] before:mr-2 before:text-blue-500 before:font-bold"
+              ? "before:content-['•'] before:mr-2 before:text-blue-600 before:font-bold"
               : heading.level === 2
-              ? "before:content-['◦'] before:mr-2 before:text-blue-400 before:font-bold" 
-              : "before:content-['▪️'] before:mr-2 before:text-blue-300 before:text-xs";
+              ? "before:content-['◦'] before:mr-2 before:text-blue-500 before:font-bold" 
+              : "before:content-['▪️'] before:mr-2 before:text-blue-400 before:text-xs";
             
             // Active state styling
             const activeStyle = activeId === heading.id
-              ? "text-blue-600 dark:text-blue-400 font-medium"
-              : "text-gray-700 dark:text-gray-300";
+              ? "text-blue-600 font-medium"
+              : "text-gray-700";
             
             return (
               <li 
@@ -100,7 +100,7 @@ export default function TableOfContents() {
                 <a
                   href={`#${heading.id}`}
                   className={`
-                    flex items-baseline py-1 text-sm hover:text-blue-600 dark:hover:text-blue-400 
+                    flex items-baseline py-1 text-sm hover:text-blue-600 
                     transition-colors group ${activeStyle} ${dotStyle}
                   `}
                   onClick={(e) => {
