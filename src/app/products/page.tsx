@@ -1,8 +1,7 @@
 import MainLayout from "@/components/layout/MainLayout";
-import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { NextPageProps } from "@/lib/types";
+import { getAllProducts } from "@/lib/products";
 import ProductsClient from "./ProductsClient";
 
 export const metadata: Metadata = {
@@ -11,6 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage(props: NextPageProps) {
+  const products = await getAllProducts();
+
   return (
     <MainLayout>
       <div className="max-w-6xl mx-auto">
@@ -22,7 +23,7 @@ export default async function ProductsPage(props: NextPageProps) {
           <div className="h-1 w-20 bg-blue-600 mx-auto mt-6"></div>
         </header>
 
-        <ProductsClient />
+        <ProductsClient products={products} />
       </div>
     </MainLayout>
   );

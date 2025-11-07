@@ -18,7 +18,7 @@ export default async function Home(props: NextPageProps) {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
-              Software Engineering & Technical Insights
+              Creative Builder
             </h1>
             <p className="text-xl text-gray-600 mb-8 min-h-[4rem]">
               <TypewriterEffect 
