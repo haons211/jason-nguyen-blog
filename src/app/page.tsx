@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts, getUserInformation } from "@/lib/mdx";
 import { NextPageProps } from "@/lib/types";
+import TypewriterEffect from "@/components/TypewriterEffect";
 
 export default async function Home(props: NextPageProps) {
   // We can ignore the params and searchParams in this page since we don't use them
@@ -19,8 +20,12 @@ export default async function Home(props: NextPageProps) {
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
               Software Engineering & Technical Insights
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Hi, I&apos;m {getUserInformation().name}. I write about software development, web technologies, and professional growth.
+            <p className="text-xl text-gray-600 mb-8 min-h-[4rem]">
+              <TypewriterEffect 
+                sentences={getUserInformation().introduction}
+                speed={80}
+                pauseBetweenSentences={2000}
+              />
             </p>
             <div className="flex flex-wrap gap-4">
               <Link

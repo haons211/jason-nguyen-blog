@@ -21,6 +21,7 @@ export type UserInformation = {
   email: string;
   avatarUrl: string;
   bio: string;
+  introduction: string[];
   skills: string[];
   socials: { name: string; url: string }[];
 };
