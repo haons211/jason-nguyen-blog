@@ -1,17 +1,6 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import Prism from 'prismjs';
-
-// Import Prism languages
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-json';
 
 type CodeBlockProps = {
   children: React.ReactNode;
@@ -26,10 +15,33 @@ export default function CodeBlock({ children, className }: CodeBlockProps) {
   const language = className?.replace(/language-/, '') || 'javascript';
 
   useEffect(() => {
-    if (containerRef.current) {
-      // Apply Prism highlighting
-      Prism.highlightAllUnder(containerRef.current);
-    }
+    const loadPrism = async () => {
+      if (typeof window === 'undefined') return;
+      
+      try {
+        // Dynamic import Prism.js
+        const Prism = (await import('prismjs')).default;
+        
+        // Load language components
+        await import('prismjs/components/prism-javascript');
+        await import('prismjs/components/prism-typescript');
+        await import('prismjs/components/prism-jsx');
+        await import('prismjs/components/prism-tsx');
+        await import('prismjs/components/prism-python');
+        await import('prismjs/components/prism-css');
+        await import('prismjs/components/prism-bash');
+        await import('prismjs/components/prism-json');
+        
+        if (containerRef.current) {
+          // Apply Prism highlighting
+          Prism.highlightAllUnder(containerRef.current);
+        }
+      } catch (error) {
+        console.warn('Failed to load Prism.js:', error);
+      }
+    };
+
+    loadPrism();
   }, [children, language]);
 
   const handleCopy = async () => {
