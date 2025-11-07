@@ -65,14 +65,14 @@ export default async function BlogPost(props: SlugPageProps) {
   return (
     <MainLayout>
       <div className="max-w-6xl mx-auto px-4 lg:px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-6 lg:gap-8">
           {/* Left Sidebar - Table of Contents */}
           <aside className="self-start lg:-ml-16 xl:-ml-24 2xl:-ml-32">
             <TableOfContents />
           </aside>
           
           {/* Main Content */}
-          <div className="lg:pr-8">
+          <div className="lg:-ml-8 lg:pr-4">
             <article className="prose lg:prose-xl mx-auto max-w-none">
               {/* Post Header */}
               <header className="mb-10 not-prose">
