@@ -86,12 +86,12 @@ const components = {
     <li className="mb-1">{children}</li>
   ),
   code: ({ children }: { children: React.ReactNode }) => (
-    <code className="px-1.5 py-0.5 rounded bg-gray-100 font-mono text-sm">
+    <code className="px-2 py-1 rounded-md font-mono text-sm bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 border border-slate-300 shadow-sm">
       {children}
     </code>
   ),
-  pre: ({ children }: { children: React.ReactNode }) => (
-    <CodeBlock>{children}</CodeBlock>
+  pre: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <CodeBlock className={className}>{children}</CodeBlock>
   ),
   // Add custom components below
   Callout: ({ children, type = 'info' }: { children: React.ReactNode; type?: 'info' | 'warning' | 'error' }) => {

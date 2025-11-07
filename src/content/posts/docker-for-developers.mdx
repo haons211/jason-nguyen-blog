@@ -1,0 +1,72 @@
+---
+title: "Docker for Web Developers"
+description: "A comprehensive guide to using Docker for web development workflows and deployment."
+date: "2024-11-02"
+tags: ["Docker", "DevOps", "Development"]
+---
+
+# Docker for Web Developers
+
+Docker revolutionizes how we develop and deploy applications. Learn the essentials for web development.
+
+## What is Docker?
+
+Docker is a containerization platform that packages applications and their dependencies into lightweight containers.
+
+## Basic Dockerfile
+
+Create a Dockerfile for your Node.js application:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+## Docker Compose
+
+Use Docker Compose for multi-service applications:
+
+```yaml
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+  
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=myapp
+      - POSTGRES_PASSWORD=password
+```
+
+## Development Workflow
+
+1. Build the image: `docker build -t myapp .`
+2. Run the container: `docker run -p 3000:3000 myapp`
+3. Use volumes for development: `docker run -v $(pwd):/app myapp`
+
+## Best Practices
+
+- Use multi-stage builds
+- Minimize image size
+- Use .dockerignore
+- Don't run as root
+- Use specific image tags
+
+## Conclusion
+
+Docker simplifies development environments and ensures consistency across different stages of deployment.

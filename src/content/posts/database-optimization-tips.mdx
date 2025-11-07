@@ -1,0 +1,122 @@
+---
+title: "Database Optimization Tips for Better Performance"
+description: "Essential database optimization techniques to improve query performance and application speed."
+date: "2024-10-28"
+tags: ["Database", "Performance", "SQL", "Optimization"]
+---
+
+# Database Optimization Tips for Better Performance
+
+Database performance is critical for application success. Here are proven optimization techniques.
+
+## Indexing Strategies
+
+Create indexes on frequently queried columns:
+
+```sql
+-- Single column index
+CREATE INDEX idx_user_email ON users(email);
+
+-- Composite index
+CREATE INDEX idx_order_date_status ON orders(order_date, status);
+
+-- Partial index
+CREATE INDEX idx_active_users ON users(email) WHERE active = true;
+```
+
+## Query Optimization
+
+Write efficient queries:
+
+```sql
+-- Use LIMIT for large datasets
+SELECT * FROM products ORDER BY created_at DESC LIMIT 10;
+
+-- Use EXISTS instead of IN for subqueries
+SELECT * FROM users u 
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
+
+-- Avoid SELECT *
+SELECT id, name, email FROM users WHERE active = true;
+```
+
+## Connection Pooling
+
+Implement connection pooling:
+
+```javascript
+const pool = new Pool({
+  host: 'localhost',
+  database: 'myapp',
+  user: 'postgres',
+  password: 'password',
+  max: 20, // Maximum connections
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
+```
+
+## Caching Strategies
+
+Implement multiple caching layers:
+
+1. **Application Cache**: Redis, Memcached
+2. **Query Result Cache**: Database-level caching
+3. **CDN Cache**: For static content
+
+```javascript
+// Redis caching example
+const cachedUser = await redis.get(`user:${userId}`);
+if (cachedUser) {
+  return JSON.parse(cachedUser);
+}
+
+const user = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
+await redis.setex(`user:${userId}`, 3600, JSON.stringify(user));
+```
+
+## Database Design
+
+Normalize appropriately:
+
+```sql
+-- Normalized tables
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE user_profiles (
+  user_id INTEGER REFERENCES users(id),
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  bio TEXT
+);
+```
+
+## Monitoring and Analysis
+
+Use EXPLAIN to analyze queries:
+
+```sql
+EXPLAIN ANALYZE 
+SELECT u.email, p.first_name 
+FROM users u 
+JOIN user_profiles p ON u.id = p.user_id 
+WHERE u.created_at > '2024-01-01';
+```
+
+## Partitioning
+
+Partition large tables:
+
+```sql
+-- Range partitioning by date
+CREATE TABLE orders_2024 PARTITION OF orders
+FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
+```
+
+## Conclusion
+
+Database optimization is an ongoing process. Regular monitoring, proper indexing, and efficient queries are key to maintaining good performance.

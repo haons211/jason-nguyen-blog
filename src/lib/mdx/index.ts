@@ -9,6 +9,7 @@ export type PostMeta = {
   description: string;
   date: string;
   tags?: string[];
+  thumbnail?: string;
   slug: string;
   publishedAt?: string;
   updatedAt?: string;
@@ -48,6 +49,7 @@ export async function getPostBySlug(slug: string) {
     description: data.description || '',
     date: data.date || '',
     tags: data.tags || [],
+    thumbnail: data.thumbnail || '/thumbnails/default.jpg',
     slug,
     publishedAt: data.publishedAt || data.date,
     updatedAt: data.updatedAt || data.date,
@@ -67,9 +69,11 @@ export async function getAllPosts() {
   );
   
   // Sort by date (newest first)
-  return posts.sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  return posts.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA; // Newest first
+  });
 }
 
 function calculateReadingTime(content: string) {

@@ -1,0 +1,71 @@
+---
+title: "JavaScript ES2024: New Features You Should Know"
+description: "Explore the latest JavaScript features introduced in ES2024 and how to use them in your projects."
+date: "2024-10-31"
+tags: ["JavaScript", "ES2024", "Modern JS"]
+thumbnail: "/thumbnails/javascript.jpg"
+---
+
+# JavaScript ES2024: New Features You Should Know
+
+ES2024 brings exciting new features to JavaScript. Let's explore the most important ones.
+
+## Array Grouping
+
+Group array elements by a key:
+
+```javascript
+const products = [
+  { name: 'Laptop', category: 'Electronics' },
+  { name: 'Shirt', category: 'Clothing' },
+  { name: 'Phone', category: 'Electronics' }
+];
+
+const grouped = Object.groupBy(products, item => item.category);
+// { Electronics: [...], Clothing: [...] }
+```
+
+## Promise.withResolvers()
+
+A new way to create promises:
+
+```javascript
+const { promise, resolve, reject } = Promise.withResolvers();
+
+// Use resolve/reject from outside the promise
+setTimeout(() => resolve('Done!'), 1000);
+```
+
+## Temporal API (Stage 3)
+
+Better date and time handling:
+
+```javascript
+const now = Temporal.Now.plainDateISO();
+const birthday = Temporal.PlainDate.from('1990-05-15');
+const age = now.since(birthday).years;
+```
+
+## RegExp v Flag
+
+Enhanced Unicode support in regular expressions:
+
+```javascript
+const regex = /[\p{Script=Latin}]/v;
+console.log(regex.test('Hello')); // true
+```
+
+## Atomics.waitAsync()
+
+Non-blocking atomic operations:
+
+```javascript
+const result = Atomics.waitAsync(sharedArray, 0, 0);
+if (result.async) {
+  result.value.then(() => console.log('Value changed'));
+}
+```
+
+## Conclusion
+
+ES2024 continues to evolve JavaScript with powerful new features. Start experimenting with these features today!

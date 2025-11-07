@@ -15,3 +15,110 @@
 /* Dark theme removed */
 
 /* Remove body overrides so Tailwind classes control colors */
+
+/* Syntax highlighting for code blocks using Prism.js */
+pre[class*="language-"] {
+  color: #e2e8f0; /* slate-200 - default text color */
+}
+
+code[class*="language-"] {
+  color: #e2e8f0; /* slate-200 - default text color */
+}
+
+/* Prism.js token styling */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #64748b; /* slate-500 */
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #94a3b8; /* slate-400 */
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #fbbf24; /* amber-400 */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #34d399; /* emerald-400 */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #f472b6; /* pink-400 */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #c084fc; /* purple-400 */
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: #60a5fa; /* blue-400 */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #fb7185; /* rose-400 */
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* Language-specific overrides */
+.language-json .token.property {
+  color: #60a5fa; /* blue-400 */
+}
+
+.language-json .token.string {
+  color: #34d399; /* emerald-400 */
+}
+
+.language-css .token.selector {
+  color: #fbbf24; /* amber-400 */
+}
+
+.language-css .token.property {
+  color: #60a5fa; /* blue-400 */
+}
+
+/* Inline code styling */
+code:not([class*="language-"]) {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  color: #475569; /* slate-600 */
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  border: 1px solid #cbd5e1; /* slate-300 */
+}

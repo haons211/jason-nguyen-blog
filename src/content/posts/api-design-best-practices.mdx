@@ -1,0 +1,114 @@
+---
+title: "RESTful API Design Best Practices"
+description: "Learn how to design clean, maintainable, and scalable RESTful APIs following industry best practices."
+date: "2024-10-30"
+tags: ["API", "REST", "Backend", "Design"]
+---
+
+# RESTful API Design Best Practices
+
+Designing good APIs is crucial for maintainable and scalable applications. Here are the essential best practices.
+
+## Resource Naming
+
+Use nouns for resources, not verbs:
+
+```
+✅ GET /users/123
+❌ GET /getUser/123
+
+✅ POST /users
+❌ POST /createUser
+```
+
+## HTTP Methods
+
+Use appropriate HTTP methods:
+
+- **GET**: Retrieve data
+- **POST**: Create new resources
+- **PUT**: Update entire resource
+- **PATCH**: Partial updates
+- **DELETE**: Remove resources
+
+## Status Codes
+
+Return meaningful HTTP status codes:
+
+```javascript
+// Success
+200 OK - Successful GET, PUT, PATCH
+201 Created - Successful POST
+204 No Content - Successful DELETE
+
+// Client Errors
+400 Bad Request - Invalid request
+401 Unauthorized - Authentication required
+404 Not Found - Resource doesn't exist
+
+// Server Errors
+500 Internal Server Error - Server error
+```
+
+## Response Format
+
+Consistent JSON response structure:
+
+```javascript
+{
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "meta": {
+    "timestamp": "2024-10-30T10:00:00Z"
+  }
+}
+```
+
+## Pagination
+
+Implement pagination for large datasets:
+
+```javascript
+{
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "totalPages": 5
+  }
+}
+```
+
+## Error Handling
+
+Provide clear error messages:
+
+```javascript
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid email format",
+    "details": {
+      "field": "email",
+      "value": "invalid-email"
+    }
+  }
+}
+```
+
+## Versioning
+
+Version your APIs:
+
+```
+/api/v1/users
+/api/v2/users
+```
+
+## Conclusion
+
+Following these REST API best practices will help you build APIs that are easy to use, maintain, and scale.
