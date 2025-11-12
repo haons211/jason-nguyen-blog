@@ -8,11 +8,14 @@ A high-performance personal blog built with Next.js, focusing on software engine
 - **Performance-focused**: Optimized with static site generation for maximum speed and SEO
 - **Content Management**: MDX-based content with frontmatter
 - **Advanced SEO**: Metadata, structured data, sitemap, and robots.txt
+- **Google Analytics**: Built-in GA4 tracking integration
 - **Dark Mode**: System-aware theme with user override option
-- **Search**: Client-side search with Fuse.js
+- **Search**: Client-side search with Fuse.js for Blog and Life posts
 - **Comments**: Integration with Giscus (GitHub Discussions)
 - **RSS Feed**: Auto-generated feed for content syndication
 - **Responsive Design**: Mobile-first approach for all screen sizes
+- **Image Optimization**: Automatic image optimization with Next.js Image component
+- **Multiple Sections**: Blog (tech), Life (personal stories), Products showcase
 
 ## Getting Started
 
@@ -37,14 +40,20 @@ npm install
 yarn
 ```
 
-3. Run the development server:
+3. Create environment variables (optional for local dev):
+```bash
+# Create .env.local file
+echo "NEXT_PUBLIC_GA_MEASUREMENT_ID=your-ga-id" > .env.local
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 ## Git Setup and Deployment
 
