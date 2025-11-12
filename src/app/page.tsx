@@ -63,10 +63,10 @@ export default async function Home(props: NextPageProps) {
               <Link 
                 key={post.slug} 
                 href={`/blog/${post.slug}`}
-                className="group"
+                className="group h-full"
               >
-                <div className="border border-gray-200 rounded-lg overflow-hidden transition-all group-hover:shadow-md">
-                  <div className="p-6">
+                <div className="h-full border border-gray-200 rounded-lg overflow-hidden transition-all group-hover:shadow-md flex flex-col">
+                  <div className="p-6 flex flex-col flex-grow">
                     <p className="text-sm text-gray-500 mb-2">
                       {new Date(post.date).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -74,10 +74,10 @@ export default async function Home(props: NextPageProps) {
                         day: 'numeric',
                       })}
                     </p>
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 line-clamp-3 flex-grow">
                       {post.description}
                     </p>
                     <div className="mt-4 flex items-center text-sm text-gray-500">
