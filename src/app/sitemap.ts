@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/mdx';
+import { getAllLifePosts } from '@/lib/life';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://jasonnguyen.dev';
@@ -8,6 +9,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt || post.publishedAt || post.date,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+  
+  // Get all life posts
+  const lifePosts = await getAllLifePosts();
+  const lifeUrls = lifePosts.map((post) => ({
+    url: `${baseUrl}/life/${post.slug}`,
     lastModified: post.updatedAt || post.publishedAt || post.date,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
@@ -28,6 +38,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/life`,
+      lastModified: lifePosts.length > 0 ? lifePosts[0].date : new Date().toISOString(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date().toISOString(),
       changeFrequency: 'monthly' as const,
@@ -35,5 +51,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
   
-  return [...staticPages, ...blogUrls];
+  return [...staticPages, ...blogUrls, ...lifeUrls];
 } 

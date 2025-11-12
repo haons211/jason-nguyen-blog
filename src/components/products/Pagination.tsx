@@ -4,10 +4,13 @@ type PaginationProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  colorScheme?: 'blue' | 'purple';
 };
 
-export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+export default function Pagination({ currentPage, totalPages, onPageChange, colorScheme = 'blue' }: PaginationProps) {
   if (totalPages <= 1) return null;
+  
+  const activeColorClass = colorScheme === 'purple' ? 'bg-purple-600 text-white' : 'bg-blue-600 text-white';
 
   const getPageNumbers = () => {
     const pages = [];
@@ -81,7 +84,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
               onClick={() => onPageChange(page as number)}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 currentPage === page
-                  ? 'bg-blue-600 text-white'
+                  ? activeColorClass
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
               aria-label={`Go to page ${page}`}

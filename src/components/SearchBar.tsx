@@ -11,6 +11,7 @@ type SearchResult = {
   slug: string;
   date: string;
   tags?: string[];
+  type?: 'blog' | 'life';
 };
 
 export default function SearchBar() {
@@ -84,7 +85,9 @@ export default function SearchBar() {
     if (e.key === 'Enter' && results.length > 0) {
       e.preventDefault();
       setShowResults(false);
-      router.push(`/blog/${results[0].slug}`);
+      const firstResult = results[0];
+      const prefix = firstResult.type === 'life' ? '/life' : '/blog';
+      router.push(`${prefix}/${firstResult.slug}`);
     }
   };
 
@@ -122,32 +125,46 @@ export default function SearchBar() {
             <div className="p-4 text-center text-gray-500">Loading...</div>
           ) : results.length > 0 ? (
             <ul className="max-h-96 overflow-y-auto">
-              {results.slice(0, 8).map((result) => (
-                <li key={result.slug} className="border-b border-gray-100 last:border-0">
-                  <Link 
-                    href={`/blog/${result.slug}`}
-                    onClick={() => setShowResults(false)}
-                    className="block p-4 hover:bg-gray-50"
-                  >
-                    <h3 className="font-medium text-gray-900">{result.title}</h3>
-                    <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-                      {result.description}
-                    </p>
-                    {result.tags && result.tags.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {result.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700"
-                          >
-                            {tag}
+              {results.slice(0, 8).map((result) => {
+                const prefix = result.type === 'life' ? '/life' : '/blog';
+                const badgeColor = result.type === 'life' 
+                  ? 'bg-purple-100 text-purple-700' 
+                  : 'bg-blue-100 text-blue-700';
+                
+                return (
+                  <li key={`${result.type}-${result.slug}`} className="border-b border-gray-100 last:border-0">
+                    <Link 
+                      href={`${prefix}/${result.slug}`}
+                      onClick={() => setShowResults(false)}
+                      className="block p-4 hover:bg-gray-50"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-medium text-gray-900 flex-1">{result.title}</h3>
+                        {result.type && (
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${badgeColor} whitespace-nowrap`}>
+                            {result.type}
                           </span>
-                        ))}
+                        )}
                       </div>
-                    )}
-                  </Link>
-                </li>
-              ))}
+                      <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                        {result.description}
+                      </p>
+                      {result.tags && result.tags.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {result.tags.slice(0, 3).map((tag) => (
+                            <span
+                              key={tag}
+                              className="inline-block px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           ) : query.length > 1 ? (
             <div className="p-4 text-center text-gray-500">No results found</div>

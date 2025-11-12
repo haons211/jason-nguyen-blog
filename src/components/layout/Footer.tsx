@@ -4,6 +4,7 @@ const footerNavigation = {
   main: [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Life', href: '/life' },
     { name: 'About', href: '/about' },
   ],
   social: [

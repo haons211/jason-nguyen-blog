@@ -64,16 +64,27 @@ const components = {
       </a>
     );
   },
-  img: ({ src, alt }: { src: string; alt?: string }) => {
+  img: ({ src, alt, title }: { src: string; alt?: string; title?: string }) => {
+    // Determine if image should be full width or contained
+    const isFullWidth = title?.includes('fullwidth');
+    
     return (
-      <div className="my-6 relative h-64 md:h-96">
-        <Image
-          src={src || ''}
-          alt={alt || ''}
-          fill
-          className="object-contain"
-        />
-      </div>
+      <figure className="my-8">
+        <div className={`relative ${isFullWidth ? 'w-full h-[400px] md:h-[600px]' : 'w-full h-64 md:h-96'} rounded-lg overflow-hidden`}>
+          <Image
+            src={src || ''}
+            alt={alt || ''}
+            fill
+            className={`${isFullWidth ? 'object-cover' : 'object-contain'}`}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+          />
+        </div>
+        {alt && (
+          <figcaption className="text-center text-sm text-gray-600 mt-3 italic">
+            {alt}
+          </figcaption>
+        )}
+      </figure>
     );
   },
   ul: ({ children }: { children: React.ReactNode }) => (
@@ -104,6 +115,24 @@ const components = {
     return (
       <div className={`p-4 my-4 border-l-4 rounded-r-lg ${styles[type]}`}>
         {children}
+      </div>
+    );
+  },
+  // Custom Image Gallery component
+  ImageGallery: ({ images }: { images: Array<{ src: string; alt: string }> }) => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+        {images.map((image, index) => (
+          <div key={index} className="relative h-64 rounded-lg overflow-hidden">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+        ))}
       </div>
     );
   },
