@@ -3,7 +3,6 @@ import { getAllLifePostSlugs, getLifePostBySlug, getAllLifePosts } from "@/lib/l
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import Link from "next/link";
-import Comments from "@/components/Comments";
 import mdxComponents from "@/lib/mdx/mdx-components";
 import TableOfContents from "@/components/TableOfContents";
 import { SlugPageProps } from "@/lib/types";
@@ -125,9 +124,6 @@ export default async function LifePost(props: SlugPageProps) {
                 <MDXRemote source={content} components={mdxComponents} />
               </div>
             </article>
-            
-            {/* Comments Section */}
-            <Comments />
 
             {/* Post Navigation */}
             <nav className="mt-12 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4" aria-label="Post navigation">
