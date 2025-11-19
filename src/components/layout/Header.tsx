@@ -4,9 +4,9 @@ import SearchBar from '@/components/SearchBar';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Blog', href: '/blog' },
   { name: 'Life', href: '/life' },
   { name: 'Products', href: '/products' },
+  { name: 'Blog', href: '/blog' },
   { name: 'About', href: '/about#career' },
 ];
 

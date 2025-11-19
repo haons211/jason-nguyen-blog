@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import BlogModal from "@/components/blog/BlogModal";
-import Pagination from "@/components/products/Pagination";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { PostMeta } from "@/lib/mdx";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 type BlogClientProps = {
   posts: PostMeta[];
@@ -13,127 +20,252 @@ type BlogClientProps = {
 
 const POSTS_PER_PAGE = 9;
 
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
 export default function BlogClient({ posts }: BlogClientProps) {
-  const [selectedPost, setSelectedPost] = useState<PostMeta | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+  // Extract all unique tags
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    posts.forEach(post => post.tags?.forEach(tag => tags.add(tag)));
+    return Array.from(tags).sort();
+  }, [posts]);
 
-  const currentPosts = useMemo(() => {
-    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-    const endIndex = startIndex + POSTS_PER_PAGE;
-    return posts.slice(startIndex, endIndex);
-  }, [currentPage, posts]);
+  // Filter posts
+  const filteredPosts = useMemo(() => {
+    return posts.filter(post => {
+      const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          post.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesTag = selectedTag ? post.tags?.includes(selectedTag) : true;
+      return matchesSearch && matchesTag;
+    });
+  }, [posts, searchQuery, selectedTag]);
 
-  const handlePostClick = (post: PostMeta) => {
-    setSelectedPost(post);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedPost(null);
-  };
+  // Pagination
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const currentPosts = filteredPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top of posts section
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <>
-      {posts.length > 0 ? (
-        <>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentPosts.map((post) => (
-            <div 
-              key={post.slug} 
-              className="group bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-              onClick={() => handlePostClick(post)}
+    <div className="min-h-screen bg-white text-gray-900 selection:bg-blue-100 flex flex-col">
+      {/* Abstract Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-blue-50 to-transparent opacity-50 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-purple-50 to-transparent opacity-50 blur-3xl" />
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
+
+        <main className="flex-grow pt-32 pb-24 px-6">
+          <div className="max-w-7xl mx-auto">
+            {/* Header Section */}
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="mb-16 md:mb-24 text-center max-w-3xl mx-auto"
             >
-              {/* Post thumbnail */}
-              <div className="relative h-48 bg-gray-100 overflow-hidden">
-                <Image
-                  src={post.thumbnail || '/thumbnails/default.jpg'}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+              <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+                Writing
+              </motion.h1>
+              <motion.p variants={fadeInUp} className="text-xl text-gray-500 leading-relaxed">
+                Thoughts on software engineering, design patterns, and the future of web development.
+              </motion.p>
+            </motion.div>
+
+            {/* Search and Filter */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mb-16 space-y-6"
+            >
+              <div className="relative max-w-md mx-auto">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-6 py-4 bg-white border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                 />
-                {/* Overlay with post info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="text-sm text-white/80 mb-1">
-                      {new Date(post.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                    <h3 className="text-lg font-bold text-white line-clamp-2">{post.title}</h3>
-                  </div>
-                  {post.readingTime && (
-                    <div className="absolute top-3 right-3">
-                      <span className="bg-black/30 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                        {post.readingTime}
-                      </span>
-                    </div>
+                <svg className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-2">
+                <button
+                  onClick={() => setSelectedTag(null)}
+                  className={cn(
+                    "px-4 py-2 rounded-full text-sm font-medium transition-all",
+                    !selectedTag 
+                      ? "bg-gray-900 text-white shadow-md" 
+                      : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
                   )}
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {post.description}
-                </p>
-                
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                    {post.tags.length > 3 && (
-                      <span className="text-xs text-gray-500">
-                        +{post.tags.length - 3} more
-                      </span>
+                >
+                  All
+                </button>
+                {allTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium transition-all",
+                      tag === selectedTag 
+                        ? "bg-gray-900 text-white shadow-md" 
+                        : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
                     )}
-                  </div>
-                )}
-                
-                <div className="text-sm text-blue-600 font-medium">
-                  Click to preview →
-                </div>
+                  >
+                    {tag}
+                  </button>
+                ))}
               </div>
-            </div>
-          ))}
+            </motion.div>
+
+            {/* Posts Grid */}
+            <AnimatePresence mode="wait">
+              {currentPosts.length > 0 ? (
+                <motion.div 
+                  key={currentPage + (selectedTag || "") + searchQuery}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={staggerContainer}
+                  className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                >
+                  {currentPosts.map((post) => (
+                    <motion.div variants={fadeInUp} key={post.slug}>
+                      <Link href={`/blog/${post.slug}`} className="group block h-full">
+                        <div className="h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                          <div className="relative h-56 overflow-hidden">
+                            <Image
+                              src={post.thumbnail || '/thumbnails/default.jpg'}
+                              alt={post.title}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
+                          
+                          <div className="p-8 flex flex-col flex-grow">
+                            <div className="flex items-center gap-3 text-sm text-gray-500 mb-4">
+                              <time dateTime={post.date}>
+                                {new Date(post.date).toLocaleDateString("en-US", {
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric"
+                                })}
+                              </time>
+                              <span>•</span>
+                              <span>{post.readingTime}</span>
+                            </div>
+                            
+                            <h3 className="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+                              {post.title}
+                            </h3>
+                            
+                            <p className="text-gray-600 line-clamp-3 mb-6 flex-grow leading-relaxed">
+                              {post.description}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 mt-auto">
+                              {post.tags?.slice(0, 2).map(tag => (
+                                <span key={tag} className="text-xs font-medium px-2.5 py-1 bg-gray-50 text-gray-600 rounded-md">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }}
+                  className="text-center py-32"
+                >
+                  <p className="text-xl text-gray-500">No articles found matching your criteria.</p>
+                  <button 
+                    onClick={() => { setSearchQuery(""); setSelectedTag(null); }}
+                    className="mt-4 text-blue-600 hover:underline font-medium"
+                  >
+                    Clear filters
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-20 flex justify-center gap-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={cn(
+                      "w-11 h-11 rounded-full font-medium transition-all",
+                      currentPage === page
+                        ? "bg-gray-900 text-white shadow-md"
+                        : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                    )}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
+        </main>
 
-          <Pagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </>
-      ) : (
-        <div className="text-center py-20 bg-gray-50 rounded-lg">
-          <h3 className="text-xl font-medium text-gray-600">No posts yet</h3>
-          <p className="mt-2 text-gray-500">
-            Check back soon for new content!
-          </p>
-        </div>
-      )}
-
-      <BlogModal 
-        post={selectedPost}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
-    </>
+        <Footer />
+      </div>
+    </div>
   );
 }
