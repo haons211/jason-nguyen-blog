@@ -38,7 +38,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium hover:text-gray-700 dark:hover:text-gray-300"
+                  className="inline-flex items-center px-1 pt-1 text-base font-medium hover:text-gray-700 dark:hover:text-gray-300"
                 >
                   {item.name}
                 </Link>

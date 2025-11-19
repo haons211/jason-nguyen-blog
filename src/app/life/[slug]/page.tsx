@@ -65,14 +65,14 @@ export default async function LifePost(props: SlugPageProps) {
   return (
     <MainLayout>
       <div className="max-w-6xl mx-auto px-4 lg:px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-8 lg:gap-12">
           {/* Left Sidebar - Table of Contents */}
-          <aside className="self-start lg:-ml-16 xl:-ml-24 2xl:-ml-32">
+          <aside className="self-start sticky top-24">
             <TableOfContents />
           </aside>
           
           {/* Main Content */}
-          <div className="lg:-ml-8 lg:pr-4">
+          <div className="min-w-0">
             <article className="prose lg:prose-xl mx-auto max-w-none">
               {/* Post Header */}
               <header className="mb-10 not-prose">

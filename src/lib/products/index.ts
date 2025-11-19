@@ -12,6 +12,7 @@ export type ProductMeta = {
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
+  buyUrl?: string;
   status: string;
   featured?: boolean;
   order?: number;
@@ -47,6 +48,7 @@ export async function getProductBySlug(slug: string): Promise<ProductPost> {
     technologies: data.technologies || [],
     liveUrl: data.liveUrl || '',
     githubUrl: data.githubUrl || '',
+    buyUrl: data.buyUrl || '',
     status: data.status || 'Live',
     featured: data.featured || false,
     order: data.order || 999,
