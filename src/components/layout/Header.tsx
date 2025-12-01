@@ -12,7 +12,7 @@ const navigation = [
 
 export default function Header() {
   return (
-    <header className="border-b border-gray-100 dark:border-gray-800 py-5">
+    <header className="border-b border-gray-100 py-5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center justify-between w-full sm:w-auto">
@@ -38,7 +38,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="inline-flex items-center px-1 pt-1 text-base font-medium hover:text-gray-700 dark:hover:text-gray-300"
+                  className="inline-flex items-center px-1 pt-1 text-base font-medium hover:text-gray-700"
                 >
                   {item.name}
                 </Link>
@@ -55,7 +55,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="block px-3 py-2 text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
+                className="block px-3 py-2 text-base font-medium hover:bg-gray-50 rounded-md"
               >
                 {item.name}
               </Link>
